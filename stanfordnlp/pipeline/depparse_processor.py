@@ -27,6 +27,8 @@ class DepparseProcessor(UDProcessor):
             sort_during_eval=True)
         preds = []
         for i, b in enumerate(batch):
-            preds += self.trainer.predict(b)
+            pred, prob = self.trainer.predict(b)
+            preds.extend(pred)
         preds = unsort(preds, batch.data_orig_idx)
         batch.conll.set(['head', 'deprel'], [y for x in preds for y in x])
+        batch.conll.set(['misc'], [prob] * len([y for x in preds for y in x]))
