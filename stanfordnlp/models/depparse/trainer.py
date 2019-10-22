@@ -80,7 +80,7 @@ class Trainer(BaseTrainer):
         pred_tokens = [[[str(head_seqs[i][j]), deprel_seqs[i][j]] for j in range(sentlens[i]-1)] for i in range(batch_size)]
         if unsort:
             pred_tokens = utils.unsort(pred_tokens, orig_idx)
-        return pred_tokens, log_prob
+        return pred_tokens, log_prob / len(head_seqs[0])
 
     def save(self, filename, skip_modules=True):
         model_state = self.model.state_dict()
